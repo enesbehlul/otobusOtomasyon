@@ -8,7 +8,8 @@ typedef enum Dolu{D,B}Dolu;
 
 typedef enum Gun{pazartesi,sali,carsamba,persembe,cuma,cumartesi,pazar}Gun;
 
-typedef struct Musteri{
+typedef struct Musteri
+{
     char ad[9];
     char soyad[15];
     int tcNu;
@@ -21,13 +22,15 @@ typedef struct Koltuk{
     Musteri m1;
 }Koltuk;
 
-typedef struct Otobus{
+typedef struct Otobus
+{
     char plaka[9];
     char marka[15];
     int model;
     Koltuk koltuk[4][10];
     Gun gun;
 }Otobus;
+    Otobus otobus;
 
 Musteri musteriOlustur(char adi[9],char soyadi[15],int tcNusu)
 {
@@ -38,19 +41,36 @@ Musteri musteriOlustur(char adi[9],char soyadi[15],int tcNusu)
 }
 
 void koltukSatis()
-{   char ad[9],soyad[15];
-    int tcNu;
-    puts("Müşterinin adını giriniz:");
+{   char ad[9], soyad[15];
+    int tcNu, sutun, sira;
+    puts("Musterinin adini giriniz:");
     scanf("%s",ad);
-    puts("Müşterinin soyadını giriniz:");
+    puts("Musterinin soyadini giriniz:");
     scanf("%s",soyad);
-    puts("Müşterinin kimlik numarasını giriniz:");
+    puts("Musterinin kimlik numarasini giriniz:");
     scanf("%d",tcNu);
-    musteriOlustur(ad,soyad,tcNu);
+    puts("0 dan 9 a koltuk sirasini giriniz:");
+    scanf("%d",sira);
+    puts("0 dan 3 e koltuk sutununu giriniz:");
+    scanf("%d",sutun);
+    while(true){
+        if(otobus.koltuk[sutun][sira].dolu!=D)
+        {
+            otobus.koltuk[sutun][sira].m1=musteriOlustur(ad,soyad,tcNu);
+            break;
+        }
+        else {
+            puts("Bu koltuk dolu lütfen başka bir koltuk giriniz");
+            puts("0 dan 9 a koltuk sırasını giriniz:");
+            scanf("%d",sira);
+            puts("0 dan 3 e koltuk sutununu giriniz:");
+            scanf("%d",sutun);
+        }
+    }
 }
 
-int main() {
-
-    musteriOlustur("enes","yenidünya",1453);
+int main()
+{
+    koltukSatis();
     return 0;
 }
