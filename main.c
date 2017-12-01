@@ -54,22 +54,32 @@ void koltukSatis()
     puts("0 dan 3 e koltuk sutununu giriniz:");
     scanf("%d",&sutun);
     while(true){
-        if(otobus.koltuk[sutun][sira].dolu==D)
+        if(otobus.koltuk[sutun][sira].dolu==B)
         {
             otobus.koltuk[sutun][sira].m1=musteriOlustur(ad,soyad,tcNu);
             break;
         }
         else {
-            puts("Bu koltuk dolu lütfen başka bir koltuk giriniz");
-            puts("0 dan 9 a koltuk sırasını giriniz:");
-            scanf("%d",&sira);
+            puts("Bu koltuk dolu lutfen baska bir koltuk giriniz");
             puts("0 dan 3 e koltuk sutununu giriniz:");
             scanf("%d",&sutun);
+            puts("0 dan 9 a koltuk sirasini giriniz:");
+            scanf("%d",&sira);
         }
     }
 }
 
 int main(void)
 {
+    int i,j;
+    for (i = 0; i <4 ; ++i) {
+        for (j = 0; j <10 ; ++j) {
+            otobus.koltuk[i][j].dolu=D;
+            if (j>=8){
+                otobus.koltuk[i][j].dolu=B;
+            }
+        }
+    }
     koltukSatis();
+
 }
