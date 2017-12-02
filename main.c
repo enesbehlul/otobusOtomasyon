@@ -16,7 +16,8 @@ typedef struct Musteri
     cinsiyet cins;
 }Musteri;
 
-typedef struct Koltuk{
+typedef struct Koltuk
+{
     int nu;
     enum Dolu dolu;
     Musteri m1;
@@ -38,10 +39,12 @@ Musteri musteriOlustur(char adi[9],char soyadi[15],int tcNusu)
     strcpy(mu.ad,adi);
     strcpy(mu.soyad,soyadi);
     mu.tcNu=tcNusu;
+    return mu;
 }
 
 void koltukSatis()
-{   char ad[9], soyad[15];
+{
+    char ad[9], soyad[15];
     int tcNu, sutun, sira;
     puts("Musterinin adini giriniz:");
     scanf("%s",ad);
@@ -69,17 +72,42 @@ void koltukSatis()
     }
 }
 
-int main(void)
+void otoBusDurumuGoster(){
+
+}
+
+void anaEkran()
+{
+    puts("1- Otobus Durumunu Goster");
+    puts("2- Koltuk Satıs");
+    puts("3- Kisi Arama");
+    puts("4- Cikis");
+    int a;
+    scanf("%d",&a);
+    switch (a) {
+        case 1:
+            break;
+        case 2:
+            koltukSatis();
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        default:
+            puts("yanlis giris yaptiniz");
+    }
+}
+void koltuklariBosalt()
 {
     int i,j;
     for (i = 0; i <4 ; ++i) {
         for (j = 0; j <10 ; ++j) {
-            otobus.koltuk[i][j].dolu=D;
-            if (j>=8){
-                otobus.koltuk[i][j].dolu=B;
-            }
+            otobus.koltuk[i][j].dolu=B;
         }
     }
-    koltukSatis();
-
+}
+int main(void)
+{
+    anaEkran();
 }
