@@ -6,7 +6,7 @@ typedef enum cinsiyet{E,K}cinsiyet;
 
 typedef enum Dolu{D,B}Dolu;
 
-typedef enum Gun{pazartesi,sali,carsamba,persembe,cuma,cumartesi,pazar}Gun;
+typedef enum Gun{pazartesi=1,sali,carsamba,persembe,cuma,cumartesi,pazar}Gun;
 
 typedef struct Musteri
 {
@@ -21,6 +21,7 @@ typedef struct Koltuk
     int nu;
     enum Dolu dolu;
     Musteri m1;
+    Gun gun;
 }Koltuk;
 
 typedef struct Otobus
@@ -44,7 +45,7 @@ Musteri musteriOlustur(char adi[9],char soyadi[15],int tcNusu)
 
 void koltukSatis()
 {
-    char ad[9], soyad[15];
+    char ad[9], soyad[15], gun[9];
     int tcNu, sutun, sira;
     puts("Musterinin adini giriniz:");
     scanf("%s",ad);
@@ -56,10 +57,13 @@ void koltukSatis()
     scanf("%d",&sira);
     puts("0 dan 3 e koltuk sutununu giriniz:");
     scanf("%d",&sutun);
+    puts("haftanin gununugiriniz");
+    scanf("%s",&otobus.koltuk[sutun][sira].gun);
     while(true){
         if(otobus.koltuk[sutun][sira].dolu==B)
         {
             otobus.koltuk[sutun][sira].m1=musteriOlustur(ad,soyad,tcNu);
+            //memccpy(otobus.koltuk[sutun][sira].gun,gun,9,9);
             break;
         }
         else {
@@ -72,7 +76,7 @@ void koltukSatis()
     }
 }
 
-void otoBusDurumuGoster(){
+void otobusDurumuGoster(){
 
 }
 
