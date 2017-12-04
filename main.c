@@ -135,6 +135,6 @@ void koltukDurumuYaz(Otobus otobus){
     dosya = fopen("otobus.txt","w");
     fprintf(dosya,"%s ",otobus.plaka);
     fprintf(dosya,"%s ",otobus.marka);
-    fprintf(dosya,"%d ",&otobus.model);
+    fprintf(dosya,"%d ",otobus.model);
     fclose(dosya);
 }
