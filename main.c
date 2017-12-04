@@ -8,6 +8,8 @@ typedef enum Dolu{D,B}Dolu;
 
 typedef enum Gun{pazartesi=1,sali,carsamba,persembe,cuma,cumartesi,pazar}Gun;
 
+void koltukDurumuYaz();
+
 typedef struct Musteri
 {
     char ad[9];
@@ -30,7 +32,6 @@ typedef struct Otobus
     char marka[15];
     int model;
     Koltuk koltuk[4][10];
-    Gun gun;
 }Otobus;
     Otobus otobus;
 
@@ -75,10 +76,15 @@ void koltukSatis()
         }
     }
 }
-
+FILE *dosya;
 void otobusDurumuGoster(){
 
+    dosya = fopen("otobus.txt","r");
+
+    fclose(dosya);
 }
+
+
 
 void anaEkran()
 {
@@ -102,7 +108,7 @@ void anaEkran()
             puts("yanlis giris yaptiniz");
     }
 }
-void koltuklariBosalt()
+Otobus koltuklariBosalt()
 {
     int i,j;
     for (i = 0; i <4 ; ++i) {
@@ -110,8 +116,23 @@ void koltuklariBosalt()
             otobus.koltuk[i][j].dolu=B;
         }
     }
+    return otobus;
 }
 int main(void)
-{
-    anaEkran();
+{   strcpy(otobus.plaka,"34 MR 324");
+    otobus.model=403;
+    strcpy(otobus.marka,"MERCEDES");
+
+    koltukDurumuYaz();
+    //anaEkran();
+}
+
+void koltukDurumuYaz(){
+    int i;
+    otobus = koltuklariBosalt();
+    dosya = fopen("otobus.txt","w");
+    fprintf(dosya,"%s ",otobus.plaka);
+    fprintf(dosya,"%s ",otobus.marka);
+    fprintf(dosya,"%d ",otobus.model);
+    fclose(dosya);
 }
