@@ -33,7 +33,6 @@ typedef struct Otobus
     int model;
     Koltuk koltuk[4][10];
 }Otobus;
-    Otobus otobus;
 
 Musteri musteriOlustur(char adi[9],char soyadi[15],int tcNusu)
 {
@@ -44,7 +43,7 @@ Musteri musteriOlustur(char adi[9],char soyadi[15],int tcNusu)
     return mu;
 }
 
-void koltukSatis()
+void koltukSatis(Otobus otobus)
 {
     char ad[9], soyad[15], gun[9];
     int tcNu, sutun, sira;
@@ -76,9 +75,9 @@ void koltukSatis()
         }
     }
 }
-FILE *dosya;
-void otobusDurumuGoster(){
 
+void otobusDurumuGoster(){
+    FILE *dosya;
     dosya = fopen("otobus.txt","r");
 
     fclose(dosya);
@@ -86,7 +85,7 @@ void otobusDurumuGoster(){
 
 
 
-void anaEkran()
+void anaEkran(Otobus otobus)
 {
     puts("1- Otobus Durumunu Goster");
     puts("2- Koltuk Satıs");
@@ -98,7 +97,7 @@ void anaEkran()
         case 1:
             break;
         case 2:
-            koltukSatis();
+            koltukSatis(otobus);
             break;
         case 3:
             break;
@@ -108,7 +107,7 @@ void anaEkran()
             puts("yanlis giris yaptiniz");
     }
 }
-Otobus koltuklariBosalt()
+Otobus koltuklariBosalt(Otobus otobus)
 {
     int i,j;
     for (i = 0; i <4 ; ++i) {
@@ -119,20 +118,23 @@ Otobus koltuklariBosalt()
     return otobus;
 }
 int main(void)
-{   strcpy(otobus.plaka,"34 MR 324");
+{
+    Otobus otobus;
+    strcpy(otobus.plaka,"34 MR 324");
     otobus.model=403;
     strcpy(otobus.marka,"MERCEDES");
 
-    koltukDurumuYaz();
+    koltukDurumuYaz(otobus);
     //anaEkran();
 }
 
-void koltukDurumuYaz(){
+void koltukDurumuYaz(Otobus otobus){
+    FILE *dosya;
     int i;
-    otobus = koltuklariBosalt();
+//    otobus = koltuklariBosalt(otobus);
     dosya = fopen("otobus.txt","w");
     fprintf(dosya,"%s ",otobus.plaka);
     fprintf(dosya,"%s ",otobus.marka);
-    fprintf(dosya,"%d ",otobus.model);
+    fprintf(dosya,"%d ",&otobus.model);
     fclose(dosya);
 }
