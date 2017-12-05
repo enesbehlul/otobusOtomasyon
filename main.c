@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 
@@ -7,8 +8,6 @@ typedef enum cinsiyet{E,K}cinsiyet;
 typedef enum Dolu{D,B}Dolu;
 
 typedef enum Gun{pazartesi=1,sali,carsamba,persembe,cuma,cumartesi,pazar}Gun;
-
-void koltukDurumuYaz();
 
 typedef struct Musteri
 {
@@ -28,7 +27,7 @@ typedef struct Koltuk
 
 typedef struct Otobus
 {
-    char plaka[9];
+    char plaka[15];
     char marka[15];
     int model;
     Koltuk koltuk[4][10];
@@ -45,18 +44,19 @@ Musteri musteriOlustur(char adi[9],char soyadi[15],int tcNusu)
 
 void koltukSatis(Otobus otobus)
 {
+
     char ad[9], soyad[15], gun[9];
-    int tcNu, sutun, sira;
+    int tcNu, sutun, sira,sayi;
     puts("Musterinin adini giriniz:");
     scanf("%s",ad);
     puts("Musterinin soyadini giriniz:");
     scanf("%s",soyad);
     puts("Musterinin kimlik numarasini giriniz:");
     scanf("%d",&tcNu);
-    puts("0 dan 9 a koltuk sirasini giriniz:");
-    scanf("%d",&sira);
-    puts("0 dan 3 e koltuk sutununu giriniz:");
-    scanf("%d",&sutun);
+    puts("1 den 40 a koltuk numarasını giriniz:");
+    scanf("%d",&sayi);
+    sira = sayi/4;
+    sutun = sayi%4;
     puts("haftanin gununugiriniz");
     scanf("%s",&otobus.koltuk[sutun][sira].gun);
     while(true){
@@ -107,34 +107,90 @@ void anaEkran(Otobus otobus)
             puts("yanlis giris yaptiniz");
     }
 }
-Otobus koltuklariBosalt(Otobus otobus)
+void koltuklariBosalt(Otobus *otobus)
 {
     int i,j;
     for (i = 0; i <4 ; ++i) {
         for (j = 0; j <10 ; ++j) {
-            otobus.koltuk[i][j].dolu=B;
+            otobus->koltuk[i][j].dolu=B;
         }
     }
-    return otobus;
-}
-int main(void)
-{
-    Otobus otobus;
-    strcpy(otobus.plaka,"34 MR 324");
-    otobus.model=403;
-    strcpy(otobus.marka,"MERCEDES");
-
-    koltukDurumuYaz(otobus);
-    //anaEkran();
 }
 
-void koltukDurumuYaz(Otobus otobus){
+void gunleriSifirla(Otobus *otobus){
+    int i,j;
+    for (i = 0; i <4 ; ++i) {
+        for (j = 0; j <10 ; ++j) {
+            otobus->koltuk[i][j].gun=pazartesi;
+        }
+    }
+}
+
+void otobusBilgileriniYaz(Otobus otobus){
     FILE *dosya;
-    int i;
-//    otobus = koltuklariBosalt(otobus);
-    dosya = fopen("otobus.txt","w");
-    fprintf(dosya,"%s ",otobus.plaka);
-    fprintf(dosya,"%s ",otobus.marka);
-    fprintf(dosya,"%d ",otobus.model);
+    if( ( dosya=fopen("otobus.txt","w") ) == NULL){
+        puts("dosya işlemi yapılamadı.");
+
+    }
+    else{
+        dosya = fopen("otobus.txt","w");
+        fprintf(dosya,"%s/%s/%d\n",otobus.plaka,otobus.marka,otobus.model);
+        fclose(dosya);
+    }
+}
+void koltukDurumuYaz(Otobus *otobus){
+    FILE *dosya;
+    int i = 0,j,sayac=1;
+    dosya = fopen("otobus.txt","a");
+    koltuklariBosalt(otobus);
+    for (i = 0;  i<4 ; i++) {
+        for (j = 0; j <10 ; j++) {
+            if(otobus->koltuk[i][j].dolu==1 && otobus->koltuk[i][j].m1.tcNu!=0 && otobus->koltuk[i][j].m1.cins!=0){
+                fprintf(dosya,"%d/B/%d/%s/%s/%d/%d\n",sayac,otobus->koltuk[i][j].gun,otobus->koltuk[i][j].m1.ad,otobus->koltuk[i][j].m1.soyad,otobus->koltuk[i][j].m1.tcNu,otobus->koltuk[i][j].m1.cins);
+            }
+            else{
+                fprintf(dosya,"%d/D/%d/%s/%s/%d/%d\n",sayac,otobus->koltuk[i][j].gun,otobus->koltuk[i][j].m1.ad,otobus->koltuk[i][j].m1.soyad,otobus->koltuk[i][j].m1.tcNu,otobus->koltuk[i][j].m1.cins);
+            }
+             sayac++;
+        }
+    }
     fclose(dosya);
 }
+void nullDegerAtama(Otobus *otobus){
+    int i = 0,j,sayac=1;
+    for (i = 0;  i<4 ; i++) {
+        for (j = 0; j <10 ; j++) {
+            otobus->koltuk[i][j].m1.cins=0;
+            otobus->koltuk[i][j].m1.tcNu=0;
+            strcpy(otobus->koltuk[i][j].m1.ad,"");
+            strcpy(otobus->koltuk[i][j].m1.soyad,"");
+        }
+    }
+}
+int main(void) {
+    Otobus *otobus = malloc(sizeof(*otobus));
+    //strcpy(otobus->plaka, "34 MR 324");
+    otobus->model = 403;
+    strcpy(otobus->marka, "MERCEDES");
+    nullDegerAtama(otobus);
+    koltuklariBosalt(otobus);
+    gunleriSifirla(otobus);
+    koltukDurumuYaz(otobus);
+    //anaEkran();
+    FILE *fp;
+    char str[60];
+    fp = fopen("otobus.txt", "r");
+    int sayac = 0;
+    while (sayac!=41) {
+    if (fp == NULL) {
+        perror("Error opening file");
+        return (-1);
+    }
+    if (fgets(str, 60, fp) != NULL) {
+        puts(str);
+    }
+        sayac++;
+}
+    fclose(fp);
+}
+

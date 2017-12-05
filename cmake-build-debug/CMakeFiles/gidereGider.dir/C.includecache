@@ -9,6 +9,8 @@
 C:/Users/Behlul/Desktop/gidereGider/main.c
 stdio.h
 -
+stdlib.h
+-
 string.h
 -
 stdbool.h
