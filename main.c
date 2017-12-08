@@ -36,14 +36,7 @@ typedef struct Otobus
     Koltuk koltuk[MAXSATIR][MAXSUTUN];
 }Otobus;
 
-Musteri musteriOlustur(char adi[9],char soyadi[15],int tcNusu)
-{
-    Musteri mu;
-    strcpy(mu.ad,adi);
-    strcpy(mu.soyad,soyadi);
-    mu.tcNu=tcNusu;
-    return mu;
-}
+void koltukDurumunuDosyayaYaz(Otobus *);
 
 void koltukSatis(Otobus *otobus)
 {
@@ -67,21 +60,22 @@ void koltukSatis(Otobus *otobus)
     while(true){
         if(otobus->koltuk[sira][sutun].dolu==B)
         {
-            otobus->koltuk[sira][sutun].dolu==D;
+            otobus->koltuk[sira][sutun].dolu=D;
             otobus->koltuk[sira][sutun].m1.cins = (cinsiyet == 0) ? E : K;
             otobus->koltuk[sira][sutun].m1.tcNu=tcNu;
             strcpy(otobus->koltuk[sira][sutun].m1.ad,ad);
             strcpy(otobus->koltuk[sira][sutun].m1.soyad,soyad);
             otobus->koltuk[sira][sutun].gun = gun;
             puts("Satis islemi tamamlandi");
+            koltukDurumunuDosyayaYaz(otobus);
             break;
         }
         else {
             puts("Bu koltuk dolu lutfen baska bir koltuk giriniz");
-            puts("0 dan 3 e koltuk sutununu giriniz:");
-            scanf("%d",&sutun);
-            puts("0 dan 9 a koltuk sirasini giriniz:");
-            scanf("%d",&sira);
+            puts("1 den 40 a koltuk numarasını giriniz:");
+            scanf("%d",&sayi);
+            sira = (sayi-1)/MAXSUTUN;
+            sutun = (sayi-1)%MAXSUTUN;
         }
     }
 }
@@ -97,7 +91,7 @@ void otobusDurumuGoster(Otobus *otobus){
     for (i = 0;  i<MAXSATIR ; i++) {
         printf("%d|\t",i);
         for (j =0 ; j <MAXSUTUN ; ++j) {
-            //printf("%d\t",45);
+            printf("%d\t",45);
             printf("%s\t",(otobus->koltuk[i][j].dolu==B) ? otobus->koltuk[i][j].m1.ad : otobus->koltuk[i][j].m1.soyad);
         }
         printf("\n");
@@ -172,33 +166,65 @@ void bosOtobusStructiOlustur(Otobus *otobus){
     strcpy(otobus->plaka, "34 MR 324");
     otobus->model = 403;
 
-    Koltuk ** koltuklar = (Koltuk **)malloc(MAXSATIR* sizeof(Koltuk *));
+    Koltuk **koltuklar = (Koltuk **)malloc(MAXSATIR* sizeof(Koltuk *));
+
     for (i = 0; i < MAXSATIR; i++) {
         koltuklar[i]= (Koltuk *)malloc(MAXSUTUN* sizeof(Koltuk));
     }
-
 
     for (i = 0;  i<MAXSATIR ; i++) {
         for (j = 0; j <MAXSUTUN ; j++) {
             koltuklar[i][j].nu = sayac++;
             koltuklar[i][j].m1.cins=0;
-            koltuklar[i][j].m1.tcNu=44444;
-            strcpy(koltuklar[i][j].m1.ad,"eee");
-            strcpy(koltuklar[i][j].m1.soyad,"fff");
+            koltuklar[i][j].m1.tcNu=555;
+            strcpy(koltuklar[i][j].m1.ad,"Enes");
+            strcpy(koltuklar[i][j].m1.soyad,"Behlül");
             koltuklar[i][j].dolu=B;
             koltuklar[i][j].gun=pazartesi;
         }
     }
-    memcpy(otobus->koltuk, koltuklar, sizeof(koltuklar));
-    //free(koltuklar);
+    int r;
+    for(r = 0; r < MAXSATIR; r++)
+        memcpy(otobus->koltuk[r], koltuklar[r], sizeof(Koltuk) * MAXSUTUN);
     koltukDurumunuDosyayaYaz(otobus);
 }
+
+void dosyadanOtobusBilgileriOku(Otobus *otobus){
+        int i = 0,j,sayac=1;
+        FILE *dosya;
+        dosya = fopen("otobus.txt","a");
+
+
+        Koltuk **koltuklar = (Koltuk **)malloc(MAXSATIR* sizeof(Koltuk *));
+
+        for (i = 0; i < MAXSATIR; i++) {
+            koltuklar[i]= (Koltuk *)malloc(MAXSUTUN* sizeof(Koltuk));
+        }
+
+        for (i = 0;  i<MAXSATIR ; i++) {
+            for (j = 0; j <MAXSUTUN ; j++) {
+                fscanf(dosya,"%d/%c/%d/%s/%s/%d/%d\n",
+                        otobus->koltuk[i][j].nu,
+                        otobus->koltuk[i][j].dolu,
+                        &otobus->koltuk[i][j].gun,
+                        otobus->koltuk[i][j].m1.ad,
+                        otobus->koltuk[i][j].m1.soyad,
+                        &otobus->koltuk[i][j].m1.tcNu,
+                        &otobus->koltuk[i][j].m1.cins);
+            }
+        }
+        //int r;
+       // for(r = 0; r < MAXSATIR; r++)
+           // memcpy(otobus->koltuk[r], koltuklar[r], sizeof(Koltuk) * MAXSUTUN);
+    }
 
 int main(void) {
     Otobus *otobus = (Otobus *)malloc(sizeof(Otobus));
 
-    bosOtobusStructiOlustur(otobus);
+    //bosOtobusStructiOlustur(otobus);
+    dosyadanOtobusBilgileriOku(otobus);
     anaEkran(otobus);
+
 
     return 0;
     koltukSatis(otobus);
