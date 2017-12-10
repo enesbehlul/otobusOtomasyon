@@ -139,8 +139,8 @@ void koltukDurumunuDosyayaYaz(Otobus *otobus){
     int i,j;
     dosya = fopen("otobus.txt","w");
     fprintf(dosya,"%s/%s/%d\n",otobus->plaka,otobus->marka,otobus->model);
-    for (i = 0;  i<MAXSATIR ; i++) {
-        for (j = 0; j <MAXSUTUN ; j++) {
+    for (i = 0;  i<MAXSUTUN ; i++) {
+        for (j = 0; j <MAXSATIR ; j++) {
             fprintf(dosya,"%d/%c/%d/%s/%s/%d/%d\n",
                     otobus->koltuk[i][j].nu,
                     (otobus->koltuk[i][j].dolu==B) ? 'B' : 'D',
@@ -167,8 +167,8 @@ void bosOtobusStructiOlustur(Otobus *otobus){
         koltuklar[i]= (Koltuk *)malloc(MAXSUTUN* sizeof(Koltuk));
     }
 
-    for (i = 0;  i<MAXSATIR ; i++) {
-        for (j = 0; j <MAXSUTUN ; j++) {
+    for (i = 0;  i<MAXSUTUN ; i++) {
+        for (j = 0; j <MAXSATIR ; j++) {
             koltuklar[i][j].nu = sayac++;
             koltuklar[i][j].m1.cins=0;
             koltuklar[i][j].m1.tcNu=25;
@@ -199,8 +199,8 @@ void dosyadanOtobusBilgileriOku(Otobus *otobus){
             koltuklar[i]= (Koltuk *)malloc(MAXSUTUN* sizeof(Koltuk));
         }
 
-        for (i = 0;  i<MAXSATIR ; i++) {
-            for (j = 0; j <MAXSUTUN ; j++) {
+        for (i = 0;  i<MAXSUTUN ; i++) {
+            for (j = 0; j <MAXSATIR ; j++) {
                 fscanf(dosya,"%d/%d/%d/%s/%s/%d/%d\n",
                         &numara,
                         &dolu,
@@ -219,23 +219,25 @@ void dosyadanOtobusBilgileriOku(Otobus *otobus){
 void kisiArama(Otobus *otobus){
 
     bool a = false;
-    int tcNu=0,i,j;
+    int tcNu=5,i,j;
     char devamMi = 'y';
     while (devamMi == 'y'){
         printf("Tc giriniz.");
-        scanf("%d",&tcNu);
-        for (i = 0; i <MAXSATIR ; i++) {
-            for (j = 0; j < MAXSUTUN; j++) {
+        //scanf("%d",&tcNu);
+        for (i = 0; i < MAXSUTUN ; i++) {
+            for (j = 0; j < MAXSATIR ; j++) {
                 if(otobus->koltuk[i][j].m1.tcNu==tcNu){
                     printf("\nMusteri>\n\tAd: %s\n\tSoyad: %s\n\tTc: %d",otobus->koltuk[i][j].m1.ad,otobus->koltuk[i][j].m1.soyad,otobus->koltuk[i][j].m1.tcNu);
                     a=true;
                     break;
                 }
+                else if(i==3 && j ==9){
+                    puts("Bulunamadi");
+                }
             }
             if (a == true)
                 break;
         }
-        setbuf(stdout, NULL);
         puts("Yeni arama yapmak ister misiniz, y/n");
         scanf("%c",&devamMi);
     }
@@ -244,10 +246,10 @@ void kisiArama(Otobus *otobus){
 int main(void) {
     setlocale(LC_ALL,"Turkish");
     Otobus *otobus = (Otobus *)malloc(sizeof(Otobus));
-    bosOtobusStructiOlustur(otobus);
-    //dosyadanOtobusBilgileriOku(otobus);
+    //bosOtobusStructiOlustur(otobus);
+    dosyadanOtobusBilgileriOku(otobus);
     //kisiArama(otobus);
-    anaEkran(otobus);
+    //anaEkran(otobus);
 
     return 0;
     koltukSatis(otobus);
