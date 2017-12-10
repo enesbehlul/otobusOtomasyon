@@ -13,6 +13,7 @@
   <component name="ChangeListManager">
     <list default="true" id="9d424056-6732-415d-991a-0c0181523c47" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/gidereGider.dir/C.includecache" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/gidereGider.dir/C.includecache" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/gidereGider.dir/objects.a" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/gidereGider.dir/objects.a" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/otobus.txt" afterPath="$PROJECT_DIR$/cmake-build-debug/otobus.txt" />
       <change beforePath="$PROJECT_DIR$/main.c" afterPath="$PROJECT_DIR$/main.c" />
@@ -44,8 +45,8 @@
       <file leaf-file-name="main.c" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="56">
-              <caret line="216" column="39" lean-forward="false" selection-start-line="216" selection-start-column="39" selection-end-line="216" selection-end-column="39" />
+            <state relative-caret-position="-28">
+              <caret line="218" column="0" lean-forward="true" selection-start-line="218" selection-start-column="0" selection-end-line="218" selection-end-column="0" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -179,11 +180,18 @@
       <workItem from="1512635643986" duration="118000" />
       <workItem from="1512756857823" duration="8260000" />
       <workItem from="1512768735359" duration="19000" />
+      <workItem from="1512768971248" duration="901000" />
+      <workItem from="1512805795461" duration="4717000" />
+      <workItem from="1512826368339" duration="3180000" />
+      <workItem from="1512833722501" duration="828000" />
+      <workItem from="1512835680952" duration="6841000" />
+      <workItem from="1512888286836" duration="4035000" />
+      <workItem from="1512899168566" duration="131000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="60623000" />
+    <option name="totallyTimeSpent" value="81256000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
@@ -220,20 +228,54 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/main.c</url>
-          <line>83</line>
-          <option name="timeStamp" value="25" />
+          <line>219</line>
+          <option name="timeStamp" value="35" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="29" />
+      <breakpoints-dialog>
+        <breakpoints-dialog />
+      </breakpoints-dialog>
+      <option name="time" value="36" />
     </breakpoint-manager>
-    <watches-manager>
-      <configuration name="CMakeRunConfiguration">
-        <watch expression="koltuklar[9][3]" language="ObjectiveC" />
-      </configuration>
-    </watches-manager>
+    <watches-manager />
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="watch">
+      <expression>
+        <expression-string>a</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>koltuklar[0][0]</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>koltuklar[i][j]</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>koltuklar[9][2]</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>koltuklar[18][2]</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>koltuklar[7][2]</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>koltuklar</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>koltuklar[9][3]</expression-string>
         <language-id>ObjectiveC</language-id>
@@ -245,42 +287,7 @@
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>koltuklar[0][0]</expression-string>
-        <language-id>ObjectiveC</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
         <expression-string>otobus-&gt;koltuk[0][0].m1.ad</expression-string>
-        <language-id>ObjectiveC</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>otobus-&gt;koltuk[1][2].m1.ad</expression-string>
-        <language-id>ObjectiveC</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>otobus-&gt;koltuk[3][2].m1.ad</expression-string>
-        <language-id>ObjectiveC</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>koltuklar[0][0].nu</expression-string>
-        <language-id>ObjectiveC</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>koltuklar[2][2].nu</expression-string>
-        <language-id>ObjectiveC</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>koltuklar[7][2].nu</expression-string>
-        <language-id>ObjectiveC</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>koltuklar[7][2]</expression-string>
         <language-id>ObjectiveC</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -729,8 +736,8 @@
     <entry file="file://$PROJECT_DIR$/cmake-build-debug/otobus.txt" />
     <entry file="file://$PROJECT_DIR$/main.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="56">
-          <caret line="216" column="39" lean-forward="false" selection-start-line="216" selection-start-column="39" selection-end-line="216" selection-end-column="39" />
+        <state relative-caret-position="-28">
+          <caret line="218" column="0" lean-forward="true" selection-start-line="218" selection-start-column="0" selection-end-line="218" selection-end-column="0" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
