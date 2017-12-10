@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include <locale.h>
 
 #define MAXSATIR 10
 #define MAXSUTUN 4
@@ -40,9 +39,13 @@ typedef struct Otobus
 void koltukDurumunuDosyayaYaz(Otobus *);
 void kisiArama(Otobus *);
 
+void ekraniTemizle()
+{
+    system("@cls||clear");
+}
+
 void koltukSatis(Otobus *otobus)
 {
-    setlocale(LC_ALL,"Turkish");
     char ad[9], soyad[15];
     int tcNu, sutun, sira,sayi,cinsiyet,gun;
     puts("Musterinin adini giriniz:");
@@ -69,7 +72,8 @@ void koltukSatis(Otobus *otobus)
             strcpy(otobus->koltuk[sira][sutun].m1.ad,ad);
             strcpy(otobus->koltuk[sira][sutun].m1.soyad,soyad);
             otobus->koltuk[sira][sutun].gun = gun;
-            puts("Satis islemi tamamlandi");
+            ekraniTemizle();
+            puts("*****SATIS ISLEMI TAMAMLANDI*****");
             koltukDurumunuDosyayaYaz(otobus);
             break;
         }
@@ -84,13 +88,10 @@ void koltukSatis(Otobus *otobus)
 }
 
 void otobusDurumuGoster(Otobus *otobus){
-    int sayac;
     int i,j;
     puts(otobus->plaka);
     puts(otobus->marka);
     printf("%d\nS|\t1\t2\t3\t4\n\t-\t-\t-\t-\n",otobus->model);
-    char kadinErkek;
-    int koltukNu;
     for (i = 0;  i<MAXSATIR ; i++) {
         printf("%d|\t",i+1);
         for (j =0 ; j <MAXSUTUN ; ++j) {
@@ -98,8 +99,10 @@ void otobusDurumuGoster(Otobus *otobus){
                 printf("%d\t",otobus->koltuk[i][j].nu);
             }
             else if(otobus->koltuk[i][j].dolu==D){
-                kadinErkek = (otobus->koltuk[i][j].m1.cins==E)? 'X' : 'O';
-                printf("%c\t",kadinErkek);
+                if(otobus->koltuk[i][j].m1.cins==E){
+                    printf("%c\t",'X');
+                }
+                else printf("%c\t",'O');
             }
         }
         printf("\n");
@@ -107,7 +110,7 @@ void otobusDurumuGoster(Otobus *otobus){
 }
 
 void anaEkran(Otobus *otobus)
-{   setlocale(LC_ALL,"Turkish");
+{
     while(1){
         puts("1- Otobus Durumunu Goster");
         puts("2- Koltuk Satış");
@@ -138,12 +141,12 @@ void koltukDurumunuDosyayaYaz(Otobus *otobus){
     char doluluk;
     int i,j;
     dosya = fopen("otobus.txt","w");
-    fprintf(dosya,"%s/%s/%d\n",otobus->plaka,otobus->marka,otobus->model);
-    for (i = 0;  i<MAXSUTUN ; i++) {
-        for (j = 0; j <MAXSATIR ; j++) {
-            fprintf(dosya,"%d/%c/%d/%s/%s/%d/%d\n",
+    //fprintf(dosya,"%s %s %d\n",otobus->plaka,otobus->marka,otobus->model);
+    for (i = 0;  i<MAXSATIR ; i++) {
+        for (j = 0; j <MAXSUTUN ; j++) {
+            fprintf(dosya,"%d %s %d %s %s %d %d\n",
                     otobus->koltuk[i][j].nu,
-                    (otobus->koltuk[i][j].dolu==B) ? 'B' : 'D',
+                    (otobus->koltuk[i][j].dolu==B) ? "B" : "D",
                     otobus->koltuk[i][j].gun,
                     otobus->koltuk[i][j].m1.ad,
                     otobus->koltuk[i][j].m1.soyad,
@@ -167,10 +170,10 @@ void bosOtobusStructiOlustur(Otobus *otobus){
         koltuklar[i]= (Koltuk *)malloc(MAXSUTUN* sizeof(Koltuk));
     }
 
-    for (i = 0;  i<MAXSUTUN ; i++) {
-        for (j = 0; j <MAXSATIR ; j++) {
+    for (i = 0;  i<MAXSATIR ; i++) {
+        for (j = 0; j <MAXSUTUN ; j++) {
             koltuklar[i][j].nu = sayac++;
-            koltuklar[i][j].m1.cins=0;
+            koltuklar[i][j].m1.cins=E;
             koltuklar[i][j].m1.tcNu=25;
             strcpy(koltuklar[i][j].m1.ad,"eee");
             strcpy(koltuklar[i][j].m1.soyad,"bbb");
@@ -179,41 +182,35 @@ void bosOtobusStructiOlustur(Otobus *otobus){
         }
     }
     int r;
-    for(r = 0; r < MAXSATIR; r++)
+    for(r = 0; r < MAXSATIR; ++r)
         memcpy(otobus->koltuk[r], koltuklar[r], sizeof(Koltuk) * MAXSUTUN);
     koltukDurumunuDosyayaYaz(otobus);
 }
 
 void dosyadanOtobusBilgileriOku(Otobus *otobus){
-        int i = 0,j,sayac=1;
+        int i = 0, j = 0;
         FILE *dosya;
         dosya = fopen("otobus.txt","r");
-        char *a=  malloc(45*sizeof(char));
-        int numara,dolu,gun,tc,cins;
-        char *soyad=  malloc(45*sizeof(char));
-        char *ad = malloc(45*sizeof(char));
 
-        Koltuk **koltuklar = (Koltuk **)malloc(MAXSATIR* sizeof(Koltuk *));
+        char *dolu=malloc(sizeof(char));
 
-        for (i = 0; i < MAXSATIR; i++) {
-            koltuklar[i]= (Koltuk *)malloc(MAXSUTUN* sizeof(Koltuk));
-        }
-
-        for (i = 0;  i<MAXSUTUN ; i++) {
-            for (j = 0; j <MAXSATIR ; j++) {
-                fscanf(dosya,"%d/%d/%d/%s/%s/%d/%d\n",
-                        &numara,
-                        &dolu,
-                        &gun,
-                        ad,
-                        soyad,
-                        &tc,
-                        &cins);
+        for (i = 0;  i<MAXSATIR ; i++) {
+            for (j = 0; j <MAXSUTUN ; j++) {
+                fscanf(dosya,"%d %s %d %s %s %d %d\n",
+                        &otobus->koltuk[i][j].nu,
+                        dolu,
+                        &otobus->koltuk[i][j].gun,
+                        otobus->koltuk[i][j].m1.ad,
+                        otobus->koltuk[i][j].m1.soyad,
+                        &otobus->koltuk[i][j].m1.tcNu,
+                        &otobus->koltuk[i][j].m1.cins);
+                if(!strcmp(dolu,"B")){
+                    otobus->koltuk[i][j].dolu=B;
+                }
+                else if(!strcmp(dolu,"D"))
+                    otobus->koltuk[i][j].dolu=D;
             }
         }
-        //int r;
-       // for(r = 0; r < MAXSATIR; r++)
-           // memcpy(otobus->koltuk[r], koltuklar[r], sizeof(Koltuk) * MAXSUTUN);
     }
 
 void kisiArama(Otobus *otobus){
@@ -244,30 +241,11 @@ void kisiArama(Otobus *otobus){
 }
 
 int main(void) {
-    setlocale(LC_ALL,"Turkish");
     Otobus *otobus = (Otobus *)malloc(sizeof(Otobus));
-    //bosOtobusStructiOlustur(otobus);
+    bosOtobusStructiOlustur(otobus);
     dosyadanOtobusBilgileriOku(otobus);
-    //kisiArama(otobus);
-    //anaEkran(otobus);
-
+    anaEkran(otobus);
     return 0;
-    koltukSatis(otobus);
-    FILE *fp;
-    char str[60];
-    fp = fopen("otobus.txt", "r");
-    int sayac = 0;
-    while (sayac!=41) {
-    if (fp == NULL) {
-        perror("Error opening file");
-        return (-1);
-    }
-    if (fgets(str, 60, fp) != NULL) {
-        puts(str);
-    }
-        sayac++;
-}
-    fclose(fp);
 }
 
 
