@@ -48,41 +48,49 @@ void koltukSatis(Otobus *otobus)
 {
     char ad[9], soyad[15];
     int tcNu, sutun, sira,sayi,cinsiyet,gun;
-    puts("Musterinin adini giriniz:");
-    scanf("%s",ad);
-    puts("Musterinin soyadini giriniz:");
-    scanf("%s",soyad);
-    puts("Musterinin kimlik numarasini giriniz:");
-    scanf("%d",&tcNu);
-    puts("Cinsiyetinizi giriniz Erkek için 0, Kadın için 1 :");
-    scanf("%d",&cinsiyet);
-    puts("haftanin gununu 1 den 7 ye giriniz");
-    scanf("%d",&gun);
-    puts("1 den 40 a koltuk numarasını giriniz:");
-    scanf("%d",&sayi);
-    sira = (sayi-1)/MAXSUTUN;
-    sutun = (sayi-1)%MAXSUTUN;
+    char *devamMi = malloc(2* sizeof(char));
+    strcpy(devamMi,"y");
+    while(!strcmp(devamMi,"y")){
+        puts("Bilgileri giriniz...");
+        printf("\nMusteri>\n\tAd: ");
+        scanf("%s",ad);
+        printf("\n\tSoyad: ");
+        scanf("%s",soyad);
+        printf("\n\tTC: ");
+        scanf("%d",&tcNu);
+        puts("Erkek icin 0, kadin icin 1");
+        printf("\n\tCinsiyet: ");
+        scanf("%d",&cinsiyet);
+        printf("\nKoltuk>\n\tNU: ");
+        scanf("%d",&sayi);
+        printf("\n\tGun: ");
+        scanf("%d",&gun);
+        sira = (sayi-1)/MAXSUTUN;
+        sutun = (sayi-1)%MAXSUTUN;
 
-    while(true){
-        if(otobus->koltuk[sira][sutun].dolu==B)
-        {
-            otobus->koltuk[sira][sutun].dolu=D;
-            otobus->koltuk[sira][sutun].m1.cins = (cinsiyet == 0) ? E : K;
-            otobus->koltuk[sira][sutun].m1.tcNu=tcNu;
-            strcpy(otobus->koltuk[sira][sutun].m1.ad,ad);
-            strcpy(otobus->koltuk[sira][sutun].m1.soyad,soyad);
-            otobus->koltuk[sira][sutun].gun = gun;
-            ekraniTemizle();
-            puts("*****SATIS ISLEMI TAMAMLANDI*****");
-            koltukDurumunuDosyayaYaz(otobus);
-            break;
-        }
-        else {
-            puts("Bu koltuk dolu lutfen baska bir koltuk giriniz");
-            puts("1 den 40 a koltuk numarasını giriniz:");
-            scanf("%d",&sayi);
-            sira = (sayi-1)/MAXSUTUN;
-            sutun = (sayi-1)%MAXSUTUN;
+        while(true){
+            if(otobus->koltuk[sira][sutun].dolu==B)
+            {
+                otobus->koltuk[sira][sutun].dolu=D;
+                otobus->koltuk[sira][sutun].m1.cins = (cinsiyet == 0) ? E : K;
+                otobus->koltuk[sira][sutun].m1.tcNu=tcNu;
+                strcpy(otobus->koltuk[sira][sutun].m1.ad,ad);
+                strcpy(otobus->koltuk[sira][sutun].m1.soyad,soyad);
+                otobus->koltuk[sira][sutun].gun = gun;
+                puts("*****SATIS ISLEMI TAMAMLANDI*****");
+                puts("Yeni koltuk satin almak ister misiniz? y/n");
+                scanf("%s",devamMi);
+                koltukDurumunuDosyayaYaz(otobus);
+                ekraniTemizle();
+                break;
+            }
+            else {
+                puts("Bu koltuk dolu lutfen baska bir koltuk giriniz");
+                puts("1 den 40 a koltuk numarasini giriniz:");
+                scanf("%d",&sayi);
+                sira = (sayi-1)/MAXSUTUN;
+                sutun = (sayi-1)%MAXSUTUN;
+            }
         }
     }
 }
@@ -113,7 +121,7 @@ void anaEkran(Otobus *otobus)
 {
     while(1){
         puts("1- Otobus Durumunu Goster");
-        puts("2- Koltuk Satış");
+        puts("2- Koltuk Satis");
         puts("3- Kisi Arama");
         puts("4- Cikis");
         int a;
@@ -217,36 +225,33 @@ void kisiArama(Otobus *otobus){
 
     bool a = false;
     int tcNu=5,i,j;
-    char devamMi = 'y';
-    while (devamMi == 'y'){
-        printf("Tc giriniz.");
-        //scanf("%d",&tcNu);
+    int hafta;
+    char *yN = malloc(2* sizeof(char));
+    strcpy(yN,"y");
+    while (!strcmp(yN,"y")){
+        printf("\nTc giriniz.");
+        scanf("%d",&tcNu);
         for (i = 0; i < MAXSUTUN ; i++) {
             for (j = 0; j < MAXSATIR ; j++) {
                 if(otobus->koltuk[i][j].m1.tcNu==tcNu){
                     printf("\nMusteri>\n\tAd: %s\n\tSoyad: %s\n\tTc: %d",otobus->koltuk[i][j].m1.ad,otobus->koltuk[i][j].m1.soyad,otobus->koltuk[i][j].m1.tcNu);
+                    printf("\nKoltuk>\n\tNu: %d\n\tGun: %d",otobus->koltuk[i][j].nu,otobus->koltuk[i][j].gun);
                     a=true;
                     break;
                 }
-                else if(i==3 && j ==9){
-                    puts("Bulunamadi");
-                }
             }
-            if (a == true)
-                break;
         }
-        puts("Yeni arama yapmak ister misiniz, y/n");
-        scanf("%c",&devamMi);
+        if(a == false)
+            puts("BULUNAMADI");
+        printf("\nYeni arama yapmak ister misiniz, y/n");
+        scanf("%s",yN);
     }
 }
 
 int main(void) {
     Otobus *otobus = (Otobus *)malloc(sizeof(Otobus));
-    bosOtobusStructiOlustur(otobus);
+    //bosOtobusStructiOlustur(otobus);
     dosyadanOtobusBilgileriOku(otobus);
     anaEkran(otobus);
     return 0;
 }
-
-
-
