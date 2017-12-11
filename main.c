@@ -2,34 +2,28 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-
 #define MAXSATIR 10
 #define MAXSUTUN 4
 
 typedef enum cinsiyet{E,K}cinsiyet;
-
 typedef enum Dolu{D,B}Dolu;
-
 typedef enum Gun{pazartesi=1,sali,carsamba,persembe,cuma,cumartesi,pazar}Gun;
 
-typedef struct Musteri
-{
+typedef struct Musteri {
     char ad[9];
     char soyad[15];
     int tcNu;
     cinsiyet cins;
 }Musteri;
 
-typedef struct Koltuk
-{
+typedef struct Koltuk {
     int nu;
     Dolu dolu;
     Musteri m1;
     Gun gun;
 }Koltuk;
 
-typedef struct Otobus
-{
+typedef struct Otobus {
     char plaka[15];
     char marka[15];
     int model;
@@ -39,13 +33,12 @@ typedef struct Otobus
 void koltukDurumunuDosyayaYaz(Otobus *);
 void kisiArama(Otobus *);
 
-void ekraniTemizle()
-{
+void ekraniTemizle() {
     system("@cls||clear");
 }
 
-void koltukSatis(Otobus *otobus)
-{
+void koltukSatis(Otobus *otobus) {
+    ekraniTemizle();
     char ad[9], soyad[15];
     int tcNu, sutun, sira,sayi,cinsiyet,gun;
     char *devamMi = malloc(2* sizeof(char));
@@ -96,10 +89,9 @@ void koltukSatis(Otobus *otobus)
 }
 
 void otobusDurumuGoster(Otobus *otobus){
+    ekraniTemizle();
     int i,j;
-    puts(otobus->plaka);
-    puts(otobus->marka);
-    printf("%d\nS|\t1\t2\t3\t4\n\t-\t-\t-\t-\n",otobus->model);
+    printf("%s %s %d\nS|\t1\t2\t3\t4\n\t-\t-\t-\t-\n",otobus->plaka,otobus->marka,otobus->model);
     for (i = 0;  i<MAXSATIR ; i++) {
         printf("%d|\t",i+1);
         for (j =0 ; j <MAXSUTUN ; ++j) {
@@ -117,8 +109,7 @@ void otobusDurumuGoster(Otobus *otobus){
     }
 }
 
-void anaEkran(Otobus *otobus)
-{
+void anaEkran(Otobus *otobus) {
     while(1){
         puts("1- Otobus Durumunu Goster");
         puts("2- Koltuk Satis");
@@ -149,7 +140,7 @@ void koltukDurumunuDosyayaYaz(Otobus *otobus){
     char doluluk;
     int i,j;
     dosya = fopen("otobus.txt","w");
-    //fprintf(dosya,"%s %s %d\n",otobus->plaka,otobus->marka,otobus->model);
+    fprintf(dosya,"%s %s %d\n",otobus->plaka,otobus->marka,otobus->model);
     for (i = 0;  i<MAXSATIR ; i++) {
         for (j = 0; j <MAXSUTUN ; j++) {
             fprintf(dosya,"%d %s %d %s %s %d %d\n",
@@ -167,9 +158,8 @@ void koltukDurumunuDosyayaYaz(Otobus *otobus){
 
 void bosOtobusStructiOlustur(Otobus *otobus){
     int i = 0,j,sayac=1;
-
     strcpy(otobus->marka, "MERCEDES");
-    strcpy(otobus->plaka, "34 MR 324");
+    strcpy(otobus->plaka, "34.MR.324");
     otobus->model = 403;
 
     Koltuk **koltuklar = (Koltuk **)malloc(MAXSATIR* sizeof(Koltuk *));
@@ -182,9 +172,9 @@ void bosOtobusStructiOlustur(Otobus *otobus){
         for (j = 0; j <MAXSUTUN ; j++) {
             koltuklar[i][j].nu = sayac++;
             koltuklar[i][j].m1.cins=E;
-            koltuklar[i][j].m1.tcNu=25;
-            strcpy(koltuklar[i][j].m1.ad,"eee");
-            strcpy(koltuklar[i][j].m1.soyad,"bbb");
+            koltuklar[i][j].m1.tcNu=0;
+            strcpy(koltuklar[i][j].m1.ad,"Bos");
+            strcpy(koltuklar[i][j].m1.soyad,"Koltuk");
             koltuklar[i][j].dolu=B;
             koltuklar[i][j].gun=pazartesi;
         }
@@ -197,11 +187,11 @@ void bosOtobusStructiOlustur(Otobus *otobus){
 
 void dosyadanOtobusBilgileriOku(Otobus *otobus){
         int i = 0, j = 0;
+        char *dolu=malloc(sizeof(char));
         FILE *dosya;
         dosya = fopen("otobus.txt","r");
 
-        char *dolu=malloc(sizeof(char));
-
+        fscanf(dosya,"%s %s %d\n",otobus->plaka,otobus->marka,&otobus->model);
         for (i = 0;  i<MAXSATIR ; i++) {
             for (j = 0; j <MAXSUTUN ; j++) {
                 fscanf(dosya,"%d %s %d %s %s %d %d\n",
@@ -222,7 +212,7 @@ void dosyadanOtobusBilgileriOku(Otobus *otobus){
     }
 
 void kisiArama(Otobus *otobus){
-
+    ekraniTemizle();
     bool a = false;
     int tcNu=5,i,j;
     int hafta;
@@ -231,8 +221,8 @@ void kisiArama(Otobus *otobus){
     while (!strcmp(yN,"y")){
         printf("\nTc giriniz.");
         scanf("%d",&tcNu);
-        for (i = 0; i < MAXSUTUN ; i++) {
-            for (j = 0; j < MAXSATIR ; j++) {
+        for (i = 0; i < MAXSATIR ; i++) {
+            for (j = 0; j < MAXSUTUN ; j++) {
                 if(otobus->koltuk[i][j].m1.tcNu==tcNu){
                     printf("\nMusteri>\n\tAd: %s\n\tSoyad: %s\n\tTc: %d",otobus->koltuk[i][j].m1.ad,otobus->koltuk[i][j].m1.soyad,otobus->koltuk[i][j].m1.tcNu);
                     printf("\nKoltuk>\n\tNu: %d\n\tGun: %d",otobus->koltuk[i][j].nu,otobus->koltuk[i][j].gun);
@@ -245,6 +235,7 @@ void kisiArama(Otobus *otobus){
             puts("BULUNAMADI");
         printf("\nYeni arama yapmak ister misiniz, y/n");
         scanf("%s",yN);
+        ekraniTemizle();
     }
 }
 
