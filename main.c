@@ -54,13 +54,19 @@ void koltukSatis(Otobus *otobus) {
         puts("Erkek icin 0, kadin icin 1");
         printf("\n\tCinsiyet: ");
         scanf("%d",&cinsiyet);
-        printf("\nKoltuk>\n\tNU: ");
-        scanf("%d",&sayi);
         printf("\n\tGun: ");
         scanf("%d",&gun);
-        sira = (sayi-1)/MAXSUTUN;
-        sutun = (sayi-1)%MAXSUTUN;
-
+        while (true){
+            printf("\nKoltuk>\n\tNU: ");
+            scanf("%d",&sayi);
+            if(sayi<=40 && sayi>=1) {
+                sira = (sayi - 1) / MAXSUTUN;
+                sutun = (sayi - 1) % MAXSUTUN;
+                break;
+            }
+            else
+                puts("Koltuk numarasi 1 ile 40 arasinda olmalidir.");
+        }
         while(true){
             if(otobus->koltuk[sira][sutun].dolu==B)
             {
@@ -73,7 +79,6 @@ void koltukSatis(Otobus *otobus) {
                 puts("*****SATIS ISLEMI TAMAMLANDI*****");
                 puts("Yeni koltuk satin almak ister misiniz? y/n");
                 scanf("%s",devamMi);
-                koltukDurumunuDosyayaYaz(otobus);
                 ekraniTemizle();
                 break;
             }
@@ -128,6 +133,7 @@ void anaEkran(Otobus *otobus) {
                 kisiArama(otobus);
                 break;
             case 4:
+                koltukDurumunuDosyayaYaz(otobus);
                 return;
             default:
                 puts("yanlis giris yaptiniz");
@@ -190,7 +196,6 @@ void dosyadanOtobusBilgileriOku(Otobus *otobus){
         char *dolu=malloc(sizeof(char));
         FILE *dosya;
         dosya = fopen("otobus.txt","r");
-
         fscanf(dosya,"%s %s %d\n",otobus->plaka,otobus->marka,&otobus->model);
         for (i = 0;  i<MAXSATIR ; i++) {
             for (j = 0; j <MAXSUTUN ; j++) {

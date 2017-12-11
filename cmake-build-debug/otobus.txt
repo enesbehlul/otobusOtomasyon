@@ -3,7 +3,7 @@
 2 B 1 Bos Koltuk 0 0
 3 B 1 Bos Koltuk 0 0
 4 B 1 Bos Koltuk 0 0
-5 B 1 Bos Koltuk 0 0
+5 D 4 enes girit 44 0
 6 B 1 Bos Koltuk 0 0
 7 B 1 Bos Koltuk 0 0
 8 B 1 Bos Koltuk 0 0
