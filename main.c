@@ -15,14 +15,12 @@ typedef struct Musteri {
     int tcNu;
     cinsiyet cins;
 }Musteri;
-
 typedef struct Koltuk {
     int nu;
     Dolu dolu;
     Musteri m1;
     Gun gun;
 }Koltuk;
-
 typedef struct Otobus {
     char plaka[15];
     char marka[15];
@@ -33,9 +31,7 @@ typedef struct Otobus {
 void koltukDurumunuDosyayaYaz(Otobus *);
 void kisiArama(Otobus *);
 
-void ekraniTemizle() {
-    system("@cls||clear");
-}
+void ekraniTemizle() {system("@cls||clear");}
 
 void koltukSatis(Otobus *otobus) {
     ekraniTemizle();
@@ -59,7 +55,7 @@ void koltukSatis(Otobus *otobus) {
         while (true){
             printf("\nKoltuk>\n\tNU: ");
             scanf("%d",&sayi);
-            if(sayi<=40 && sayi>=1) {
+            if(sayi<=40 && sayi>=1) {//dizi indislerini ayarlamak icin gereken islem
                 sira = (sayi - 1) / MAXSUTUN;
                 sutun = (sayi - 1) % MAXSUTUN;
                 break;
@@ -85,14 +81,21 @@ void koltukSatis(Otobus *otobus) {
             else {
                 puts("Bu koltuk dolu lutfen baska bir koltuk giriniz");
                 puts("1 den 40 a koltuk numarasini giriniz:");
-                scanf("%d",&sayi);
-                sira = (sayi-1)/MAXSUTUN;
-                sutun = (sayi-1)%MAXSUTUN;
+                while (true){
+                    printf("\nKoltuk>\n\tNU: ");
+                    scanf("%d",&sayi);
+                    if(sayi<=40 && sayi>=1) {//dizi indislerini ayarlamak icin gereken islem
+                        sira = (sayi - 1) / MAXSUTUN;
+                        sutun = (sayi - 1) % MAXSUTUN;
+                        break;
+                    }
+                    else
+                        puts("Koltuk numarasi 1 ile 40 arasinda olmalidir.");
+                }
             }
         }
     }
 }
-
 void otobusDurumuGoster(Otobus *otobus){
     ekraniTemizle();
     int i,j;
@@ -113,7 +116,6 @@ void otobusDurumuGoster(Otobus *otobus){
         printf("\n");
     }
 }
-
 void anaEkran(Otobus *otobus) {
     while(1){
         puts("1- Otobus Durumunu Goster");
@@ -140,10 +142,8 @@ void anaEkran(Otobus *otobus) {
         }
     }
 }
-
 void koltukDurumunuDosyayaYaz(Otobus *otobus){
     FILE *dosya;
-    char doluluk;
     int i,j;
     dosya = fopen("otobus.txt","w");
     fprintf(dosya,"%s %s %d\n",otobus->plaka,otobus->marka,otobus->model);
@@ -161,13 +161,12 @@ void koltukDurumunuDosyayaYaz(Otobus *otobus){
     }
     fclose(dosya);
 }
-
+//eger elimizin altinda otobus.txt dosyasi yoksa ilk bu fonksiyonu cagiriyoruz
 void bosOtobusStructiOlustur(Otobus *otobus){
     int i = 0,j,sayac=1;
     strcpy(otobus->marka, "MERCEDES");
     strcpy(otobus->plaka, "34.MR.324");
     otobus->model = 403;
-
     Koltuk **koltuklar = (Koltuk **)malloc(MAXSATIR* sizeof(Koltuk *));
 
     for (i = 0; i < MAXSATIR; i++) {
@@ -185,12 +184,11 @@ void bosOtobusStructiOlustur(Otobus *otobus){
             koltuklar[i][j].gun=pazartesi;
         }
     }
-    int r;
+    int r;//koltular dizisini otobus structinin dizine kopyalama
     for(r = 0; r < MAXSATIR; ++r)
         memcpy(otobus->koltuk[r], koltuklar[r], sizeof(Koltuk) * MAXSUTUN);
     koltukDurumunuDosyayaYaz(otobus);
 }
-
 void dosyadanOtobusBilgileriOku(Otobus *otobus){
         int i = 0, j = 0;
         char *dolu=malloc(sizeof(char));
@@ -215,7 +213,6 @@ void dosyadanOtobusBilgileriOku(Otobus *otobus){
             }
         }
     }
-
 void kisiArama(Otobus *otobus){
     ekraniTemizle();
     bool a = false;
@@ -243,7 +240,6 @@ void kisiArama(Otobus *otobus){
         ekraniTemizle();
     }
 }
-
 int main(void) {
     Otobus *otobus = (Otobus *)malloc(sizeof(Otobus));
     //bosOtobusStructiOlustur(otobus);

@@ -1,5 +1,5 @@
 34.MR.324 MERCEDES 403
-1 B 1 Bos Koltuk 0 0
+1 D 3 Omer Halisdemir 15072015 0
 2 B 1 Bos Koltuk 0 0
 3 B 1 Bos Koltuk 0 0
 4 B 1 Bos Koltuk 0 0
@@ -21,7 +21,7 @@
 20 B 1 Bos Koltuk 0 0
 21 B 1 Bos Koltuk 0 0
 22 B 1 Bos Koltuk 0 0
-23 B 1 Bos Koltuk 0 0
+23 D 5 Orhan Uygar 1071 0
 24 B 1 Bos Koltuk 0 0
 25 B 1 Bos Koltuk 0 0
 26 B 1 Bos Koltuk 0 0
